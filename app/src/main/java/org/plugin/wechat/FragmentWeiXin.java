@@ -1,14 +1,17 @@
 package org.plugin.wechat;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import org.plugin.activity.ChitChatActivity;
 import org.plugin.adapter.WeiXinAdapter;
 import org.plugin.entity.WeiXinEntity;
 
@@ -18,7 +21,7 @@ import java.util.List;
 /**
  * Created by cloudplug on 2016-09-07.
  */
-public class FragmentWeiXin extends Fragment {
+public class FragmentWeiXin extends Fragment implements AdapterView.OnItemClickListener {
 
     private ListView listView;
     private WeiXinAdapter adapter;
@@ -29,16 +32,14 @@ public class FragmentWeiXin extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         initViews();
-
         initDatas();
-
         setViewListeners();
-
         return inflater.inflate(R.layout.fragment_home, container, false);
 
     }
 
     private void initViews() {
+
 
     }
 
@@ -69,11 +70,16 @@ public class FragmentWeiXin extends Fragment {
         // if (savedInstanceState != null &&
         // savedInstanceState.getBoolean("isConflict", false))
         // return;
-
         adapter = new WeiXinAdapter(getActivity(), wxEntity, listView);
-
         listView.setAdapter(adapter);
-
+        listView.setOnItemClickListener(this);
     }
 
+
+    @Override
+    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+        Intent intent = new Intent(getActivity(), ChitChatActivity.class);
+        intent.putExtra("name", wxEntity.get(position).Name);
+        startActivity(intent);
+    }
 }
